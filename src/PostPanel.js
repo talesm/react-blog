@@ -6,6 +6,8 @@ export default function PostPanel(props) {
     return (<div className="w3-card-4 w3-center w3-theme-light"><h2>No post yet</h2></div>)
   }
   return (
-    <div>{props.posts.map(post => <Post key={post.id} post={post} user={props.user} />)}</div>
+    <div>{props.posts.map(post => (
+      <Post key={post.id} post={post} user={props.user} onEdit={props.onEdit} onRemove={props.onRemove}/>
+    ))}</div>
   )
 }

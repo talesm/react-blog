@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {userName: null, posts: [], showLogIn : false }
     this.model = new Model();
-    this.model.onPostChanged(this.handlePostsChanged);
+    this.model.onPostChanged(this.onPostsChanged);
     this.user = null;
   }
 
@@ -26,20 +26,21 @@ class App extends React.Component {
   render() {
     let topPanel;
     if(this.state.userName) {//Truthy if loged in, falsy otherwise
-      topPanel = <PostForm submitButtonText="Add New Post" onSubmit={this.handleInsertPost}/>;
+      topPanel = <PostForm submitButtonText="Add New Post" onSubmit={this.onInsertPost}/>;
     } else {
-      topPanel = <AuthPanel onLogIn={this.handleLogIn} onSignUp={this.handleSignUp} onError={alert}/>;
+      topPanel = <AuthPanel onLogIn={this.onLogIn} onSignUp={this.onSignUp} onError={alert}/>;
     }
     return (
       <div className="App">
         <div className="w3-container w3-theme App-header">
-          <LogOutButton enabled={!!this.state.userName} onClick={this.handleLogout} />
+          <LogOutButton enabled={!!this.state.userName} onClick={this.onLogout} />
           <h2>Welcome Post System, {this.state.userName || 'Visitor'}</h2>
         </div>
 
         { topPanel }
 
-        <PostPanel posts={this.state.posts} user={this.state.userName}/>
+        <PostPanel posts={this.state.posts} user={this.state.userName}
+        onEdit={this.onEditPost} onRemove={this.onRemovePost}/>
 
         <div className="w3-container w3-theme-dark App-footer">
           Created by <a target="__blank" href="https://talesm.github.io">talesm</a> for
@@ -53,14 +54,23 @@ class App extends React.Component {
     this.setState({posts: this.model.getPosts()});
   }
 
-  handleInsertPost = (post) => {
+  onInsertPost = (post) => {
     this.model.createPost(this.user, post);
   }
-  handlePostsChanged = (post) => {
+
+  onEditPost = (post) => {
+    this.model.editPost(this.user, post);
+  }
+
+  onRemovePost = (postId) => {
+    this.model.removePost(this.user, postId);
+  }
+
+  onPostsChanged = (post) => {
     this.resetPosts();
   }
 
-  handleSignUp = (userName, password) => {
+  onSignUp = (userName, password) => {
     try {
       this.user = this.model.createUser(userName, password);
       this.setState({userName: userName});
@@ -69,7 +79,7 @@ class App extends React.Component {
     }
   }
 
-  handleLogIn = (userName, password) => {
+  onLogIn = (userName, password) => {
     try {
       this.user = this.model.authUser(userName, password);
       this.setState({userName: userName});
@@ -78,7 +88,7 @@ class App extends React.Component {
     }
   }
 
-  handleLogout = () => {
+  onLogout = () => {
     this.user = null;
     this.setState({userName: null});
   }
