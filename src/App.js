@@ -21,11 +21,12 @@ class App extends React.Component {
     super(props);
     this.state = {userName: null, posts: [] }
     this.model = new Model();
-    this.model.onCreatePost(this.handleCreatePost);
+    this.model.onPostChanged(this.handlerPostsChanged);
     this.user = null;
   }
 
   componentDidMount() {
+    this.resetPosts();
   }
 
   componentWillUnmount() {
@@ -55,12 +56,16 @@ class App extends React.Component {
     );
   }
 
+  resetPosts(){
+    this.setState({posts: this.model.getPosts()});
+  }
+
   insertPost = (post) => {
     const {title, content} = post;
     this.model.createPost(this.user, title, content);
   }
-  handleCreatePost = (post) => {
-    this.setState({posts: this.model.getPosts()});
+  handlerPostsChanged = (post) => {
+    this.resetPosts();
   }
 
   handleSignUp = (userName, password) => {
@@ -73,8 +78,12 @@ class App extends React.Component {
   }
 
   logInOut = () => {
-    this.user = null;
-    this.setState({userName: null});
+    if(this.user){
+      this.user = null;
+      this.setState({userName: null});
+    } else {
+      this.setState({showLoginForm: true});
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import Model from './model.js';
+import Model from './Model.js';
 
 it('Create our model', () => {
   let model = new Model();
@@ -27,8 +27,8 @@ it('Recovers authenticated user', () => {
 it('Adds a post', () => {
   let model = new Model();
   let user = model.createUser('Fulano de Tal', 'LePassword');
-  let handler = jest.fn((postId, post) => {
-    expect(postId).not.toBeFalsy();
+  let handler = jest.fn((post) => {
+    expect(post.id).not.toBeFalsy();
     expect(post.content).toBe('The content');
     expect(post.title).toBe('A title');
     expect(post.created).toBeInstanceOf(Date);
@@ -36,7 +36,7 @@ it('Adds a post', () => {
     expect(post.modified).toEqual(post.created);
     expect(post.user).toBe('Fulano de Tal');
   });
-  model.onCreatePost(handler);
+  model.onPostChanged(handler);
   expect(handler).not.toBeCalled();
   model.createPost(user, 'A title', 'The content');
   expect(model.postsCount()).toBe(1);

@@ -12,7 +12,10 @@ export default class {
   constructor() {
     this.users = new Map();
     this.posts = [];
-    this.onCreatePostHandlers = [];
+    this.onPostChangedHandlers = [];
+
+    this.load();
+    setInterval(this.persist.bind(this), 1000);
   }
 
   postsCount() {
@@ -39,18 +42,62 @@ export default class {
     throw new Error('Invalid User or Password')
   }
 
-  onCreatePost(f) {
-    this.onCreatePostHandlers.push(f);
+  onPostChanged(f) {
+    this.onPostChangedHandlers.push(f);
   }
 
   createPost(user, title, content) {
     const date = new Date();
     let post = {id:date.toISOString(), content, title, created: date, modified: date, user: user.name}
     this.posts.unshift(post);
-    this.onCreatePostHandlers.forEach(handler => handler(post));
+    this.onPostChangedHandlers.forEach(handler => handler(post));
   }
 
   getPosts() {
     return this.posts;
+  }
+
+  persist() {
+    const localStorage = window.localStorage;
+    if(!localStorage) {
+      console.log("Can not persist");
+    }
+    const users = [];
+    for(let [_ ,value] of this.users) {
+      users.push(value);
+    }
+    localStorage["users"] = JSON.stringify(users);
+    localStorage["posts"] = JSON.stringify(this.posts);
+  }
+
+  load() {
+    const localStorage = window.localStorage;
+    if(!localStorage) {
+      console.log("Can not load");
+      return;
+    }
+    const users = JSON.parse(localStorage["users"]||"[]");
+    if(Array.isArray(users)){
+      this.users.clear();
+      users.forEach(user => this.users.set(user.name, user));
+    }
+    const posts = JSON.parse(localStorage["posts"]||"[]");
+    this.posts = Array.isArray(posts)? posts : [];
+
+    window.resetModel = () => {
+      localStorage.removeItem("users");
+      localStorage.removeItem("posts");
+      this.users.clear();
+      this.posts = [];
+      this.onPostChangedHandlers.forEach(handler => handler({}));
+    }
+
+    window.addEventListener('storage', (e) => {
+      console.log('I happened');
+      if (e.key === 'posts' || e.key === 'users') {
+        this.load();
+        this.onPostChangedHandlers.forEach(handler => handler({}));
+      }
+    })
   }
 }
