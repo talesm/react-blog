@@ -7,7 +7,10 @@ export default function PostPanel(props) {
   }
   return (
     <div>{props.posts.map(post => (
-      <Post key={post.id} post={post} user={props.user} onEdit={props.onEdit} onRemove={props.onRemove}/>
+      <Post key={post.id} post={post} user={props.user} onEdit={props.onEdit}
+        onRemove={props.onRemove} onInsertComment={props.onInsertComment}
+        onEditComment={props.onEditComment} onRemoveComment={props.onRemoveComment}
+      />
     ))}</div>
   )
 }

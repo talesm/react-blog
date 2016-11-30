@@ -40,7 +40,10 @@ class App extends React.Component {
         { topPanel }
 
         <PostPanel posts={this.state.posts} user={this.state.userName}
-        onEdit={this.onEditPost} onRemove={this.onRemovePost}/>
+          onEdit={this.onEditPost} onRemove={this.onRemovePost}
+          onEditComment={this.onEditComment} onInsertComment={this.onInsertComment}
+          onRemoveComment={this.onRemoveComment}
+        />
 
         <div className="w3-container w3-theme-dark App-footer">
           Created by <a target="__blank" href="https://talesm.github.io">talesm</a> for
@@ -64,6 +67,21 @@ class App extends React.Component {
 
   onRemovePost = (postId) => {
     this.model.removePost(this.user, postId);
+  }
+
+  onInsertComment = (postId, comment) => {
+    console.log("Insert Comment")
+    // this.model.createComment(this.user, postId, comment);
+  }
+
+  onEditComment = (postId, comment) => {
+    console.log("Edit Comment")
+    // this.model.editComment(this.user, postId, comment);
+  }
+
+  onRemoveComment = (postId, commentId) => {
+    console.log("Remove Comment")
+    // this.model.removeComment(this.user, postId, commentId);
   }
 
   onPostsChanged = (post) => {

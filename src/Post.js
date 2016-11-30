@@ -1,6 +1,7 @@
 import React from 'react';
 import PostForm from './PostForm';
 import CommentSection from './CommentSection';
+import EditButtons from './EditButtons'
 
 export default class extends React.Component{
   constructor(props) {
@@ -10,12 +11,6 @@ export default class extends React.Component{
 
   render() {
     const post = this.props.post;
-    const buttons = (this.props.user === post.user) && (
-      <div className="w3-btn-group w3-right">
-        <button className="w3-btn" onClick={this.onEdit}>Edit</button>
-        <button className="w3-btn" onClick={this.onRemove}>Remove</button>
-      </div>
-    );
     let content;
     if(this.state.editing){
       content = <PostForm submitButtonText="Submit" title={post.title} content={post.content} onSubmit={this.onEditSubmited}/>;
@@ -24,7 +19,7 @@ export default class extends React.Component{
     }
     return (
       <div className="App-post w3-card-4 w3-margin">
-        {buttons}
+        <EditButtons disabled={this.props.user !== post.user} onEdit={this.onEdit} onRemove={this.onRemove}/>
         <div className="w3-container w3-theme">
           <h3>{post.title}</h3>
         </div>
@@ -35,7 +30,10 @@ export default class extends React.Component{
           <div>Modified on {post.modified.toLocaleString()}</div>
         )}
         </div>
-        <CommentSection comments={[{content:"Test", author:"testy", modified:new Date(), id:new Date().toISOString()}]}/>
+        <CommentSection onInsert={this.onInsertComment} onRemove={this.onRemoveComment}
+          onEdit={this.onEditComment}
+          comments={[{content:"Test", author:"testy", modified:new Date(), id:new Date().toISOString()}]}
+        />
       </div>
     );
   }
@@ -56,5 +54,23 @@ export default class extends React.Component{
       this.props.onEdit(post);
     }
     this.setState({editing: false});
+  }
+
+  onInsertComment = (comment) => {
+    if(this.props.onInsertComment){
+      this.props.onInsertComment(this.props.post.id, comment);
+    }
+  }
+
+  onEditComment = (comment) => {
+    if(this.props.onEditComment){
+      this.props.onEditComment(this.props.post.id, comment);
+    }
+  }
+
+  onRemoveComment = (commentId) => {
+    if(this.props.onRemoveComment){
+      this.props.onRemoveComment(this.props.post.id, commentId);
+    }
   }
 }
