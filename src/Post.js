@@ -32,7 +32,7 @@ export default class extends React.Component{
         </div>
         <CommentSection onInsert={this.onInsertComment} onRemove={this.onRemoveComment}
           onEdit={this.onEditComment}
-          comments={[{content:"Test", author:"testy", modified:new Date(), id:new Date().toISOString()}]}
+          comments={post.comments}
         />
       </div>
     );

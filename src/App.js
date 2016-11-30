@@ -70,18 +70,15 @@ class App extends React.Component {
   }
 
   onInsertComment = (postId, comment) => {
-    console.log("Insert Comment")
-    // this.model.createComment(this.user, postId, comment);
+    this.model.createComment(this.user, postId, comment);
   }
 
   onEditComment = (postId, comment) => {
-    console.log("Edit Comment")
-    // this.model.editComment(this.user, postId, comment);
+    this.model.editComment(this.user, postId, comment);
   }
 
   onRemoveComment = (postId, commentId) => {
-    console.log("Remove Comment")
-    // this.model.removeComment(this.user, postId, commentId);
+    this.model.removeComment(this.user, postId, commentId);
   }
 
   onPostsChanged = (post) => {

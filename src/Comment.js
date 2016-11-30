@@ -42,7 +42,7 @@ export default class Comment extends React.Component
       <div className="App-comment w3-card-2 w3-section">
         <EditButtons onRemove={this.onRemove} onEdit={()=>this.setState({editing: !this.state.editing})}/>
         <div className="w3-container w3-theme-l3">
-          On {comment.modified.toLocaleString()}, {comment.author} said:
+          On {comment.modified.toLocaleString()}, {comment.user || "Unknown"} said:
         </div>
         {content}
       </div>

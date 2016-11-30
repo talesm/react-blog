@@ -16,7 +16,7 @@ export default class extends React.Component{
         {comments.map(comment => (
           <Comment key={comment.id} comment={comment} onEdit={this.props.onEdit} onRemove={this.props.onRemove}/>
         ))}
-        <textarea className="w3-input" onChange={(ev)=>this.setState({content:ev.target.value})}/>
+        <textarea className="w3-input" onChange={(ev)=>this.setState({content:ev.target.value})} value={this.state.content}/>
         <button className={"w3-btn-block w3-theme" + (!this.state.content?" w3-disabled":"")}
             onClick={this.onInsert}>
           Insert Comment
@@ -29,5 +29,6 @@ export default class extends React.Component{
     if(this.props.onInsert){
       this.props.onInsert({content: this.state.content});
     }
+    this.setState({content:''});
   }
 }

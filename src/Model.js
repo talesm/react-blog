@@ -111,7 +111,11 @@ export default class {
   getPosts() {
     return this.posts.map(post => {
       const cpost = Object.create(post)
-      cpost.comments = post.map(comment => Object.create(comment));
+      if(Array.isArray(post.comments)){
+        cpost.comments = post.comments.map(comment => Object.create(comment));
+      } else {
+        cpost.comments = [];
+      }
       return cpost;
     });
   }
@@ -126,7 +130,7 @@ export default class {
           id: date.toISOString(),
           created: date,
           modified: date,
-          user: user,
+          user: user.name,
           content: commentProps.content
         }
         if(Array.isArray(post.comments)){
