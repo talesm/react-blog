@@ -79,3 +79,39 @@ it('Remove a post', ()=>{
     expect(okHandler).toBeCalled();
     expect(model.postsCount()).toBe(0);
 });
+
+it('Adds a comment', ()=>{
+  const model = new Model();
+  const user = model.createUser('Fulano de Tal', 'LePassword');
+  const testPost = {title: 'A title', content: 'The content'};
+  const postId = model.createPost(user, testPost);
+  let post = model.getPostById(postId);
+  expect(post.comments.length).toBe(0);
+  let commentId = model.createComment(user, postId, {content: 'The content'});
+  post = model.getPostById(postId);
+  expect(post.comments.length).toBe(1);
+  expect(post.comments[0].content).toBe("The content")
+});
+
+it("Edits a comment", ()=>{
+  const model = new Model();
+  const user = model.createUser('Fulano de Tal', 'LePassword');
+  const testPost = {title: 'A title', content: 'The content'};
+  const postId = model.createPost(user, testPost);
+  let commentId = model.createComment(user, postId, {content: 'The content'});
+  model.editComment(user, postId, {id: commentId, content: 'New content'});
+  const post = model.getPostById(postId);
+  expect(post.comments.length).toBe(1);
+  expect(post.comments[0].content).toBe("New content")
+});
+
+it("Removes a comment", ()=>{
+  const model = new Model();
+  const user = model.createUser('Fulano de Tal', 'LePassword');
+  const testPost = {title: 'A title', content: 'The content'};
+  const postId = model.createPost(user, testPost);
+  let commentId = model.createComment(user, postId, {content: 'The content'});
+  model.removeComment(user, postId, commentId);
+  const post = model.getPostById(postId);
+  expect(post.comments.length).toBe(0);
+});

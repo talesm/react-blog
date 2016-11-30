@@ -97,13 +97,81 @@ export default class {
   getPostById(id) {
     for(let i in this.posts){
       if (this.posts[i].id === id) {
-        return Object.create(this.posts[i]);
+        let post = Object.create(this.posts[i]);
+        if(Array.isArray(post.comments)){
+          post.comments = post.comments.map(comment => Object.create(comment));
+        } else {
+          post.comments = [];
+        }
+        return post;
       }
     }
   }
 
   getPosts() {
-    return this.posts.map(post => Object.create(post));
+    return this.posts.map(post => {
+      const cpost = Object.create(post)
+      cpost.comments = post.map(comment => Object.create(comment));
+      return cpost;
+    });
+  }
+
+  createComment(user, postId, commentProps) {
+    const posts = this.posts;
+    for (let i in posts) {
+      if (posts.hasOwnProperty(i) && posts[i].id === postId) {
+        const post = posts[i];
+        const date = new Date();
+        const comment = {
+          id: date.toISOString(),
+          created: date,
+          modified: date,
+          user: user,
+          content: commentProps.content
+        }
+        if(Array.isArray(post.comments)){
+          post.comments.push(comment);
+        } else {
+          post.comments = [comment];
+        }
+        this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+        return comment.id;
+      }
+    }
+  }
+
+  editComment(user, postId, commentProps){
+    const posts = this.posts;
+    for (let i in posts) {
+      if (posts.hasOwnProperty(i) && posts[i].id === postId) {
+        const post = posts[i];
+        for(let j in post.comments){
+          if (post.comments.hasOwnProperty(j) && post.comments[j].id === commentProps.id) {
+            const comment = post.comments[j];
+            comment.modified = new Date();
+            comment.content = commentProps.content;
+            this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  removeComment(user, postId, commentId){
+    const posts = this.posts;
+    for (let i in posts) {
+      if (posts.hasOwnProperty(i) && posts[i].id === postId) {
+        const post = posts[i];
+        for(let j in post.comments){
+          if (post.comments.hasOwnProperty(j) && post.comments[j].id === commentId) {
+            post.comments.splice(j, 1);
+            this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+            return;
+          }
+        }
+      }
+    }
   }
 
   persist() {
