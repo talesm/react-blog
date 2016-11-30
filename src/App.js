@@ -1,28 +1,18 @@
 import React from 'react';
-import LogInForm from './LogInForm'
+import AuthPanel, {LogOutButton} from './AuthPanel'
 import Model from './Model';
-import Post from './Post'
 import PostForm from './PostForm'
-import SignUpForm from './SignUpForm'
+import PostPanel from './PostPanel'
 import './w3.css';
 import './w3-theme-amber.css';
 import './App.css';
-
-function PostPanel(props) {
-  if(props.posts.length === 0){
-    return (<div className="w3-card-4 w3-center w3-theme-light"><h2>No post yet</h2></div>)
-  }
-  return (
-    <div>{props.posts.map(post => <Post key={post.id} post={post} />)}</div>
-  )
-}
 
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {userName: null, posts: [], showLogIn : false }
     this.model = new Model();
-    this.model.onPostChanged(this.handlerPostsChanged);
+    this.model.onPostChanged(this.handlePostsChanged);
     this.user = null;
   }
 
@@ -34,33 +24,23 @@ class App extends React.Component {
   }
 
   render() {
+    let topPanel;
+    if(this.state.userName) {//Truthy if loged in, falsy otherwise
+      topPanel = <PostForm submitButtonText="Add New Post" onSubmit={this.handleInsertPost}/>;
+    } else {
+      topPanel = <AuthPanel onLogIn={this.handleLogIn} onSignUp={this.handleSignUp} onError={alert}/>;
+    }
     return (
       <div className="App">
         <div className="w3-container w3-theme App-header">
-          {this.state.userName && (
-            <button className="w3-btn w3-right w3-theme-l3" onClick={this.handleLogout}>
-            Log Out
-            </button>
-          )}
+          <LogOutButton enabled={!!this.state.userName} onClick={this.handleLogout} />
           <h2>Welcome Post System, {this.state.userName || 'Visitor'}</h2>
         </div>
-        { !this.state.userName ? (
-          <div>
-            <ul className="w3-navbar">
-              <li><a href="#" className={!this.state.showLogIn && "w3-theme-action"} onClick={()=> this.setState({showLogIn:false}) }>Sign Up</a></li>
-              <li><a href="#" className={ this.state.showLogIn && "w3-theme-action"} onClick={()=> this.setState({showLogIn:true}) }>Log In</a></li>
-            </ul>
-            {this.state.showLogIn? (
-              <LogInForm onSubmit={this.handleLogIn} onError={alert}/>
-            ):(
-              <SignUpForm onSubmit={this.handleSignUp} onError={alert}/>
-            )}
-          </div>
-        ):(
-          <PostForm submitButtonText="Add New Post" onSubmit={this.insertPost}/>
-        )}
 
-        <PostPanel posts={this.state.posts} />
+        { topPanel }
+
+        <PostPanel posts={this.state.posts} user={this.state.userName}/>
+
         <div className="w3-container w3-theme-dark App-footer">
           Created by <a target="__blank" href="https://talesm.github.io">talesm</a> for
           an employment test, do not reuse it without permission.
@@ -73,11 +53,10 @@ class App extends React.Component {
     this.setState({posts: this.model.getPosts()});
   }
 
-  insertPost = (post) => {
-    const {title, content} = post;
-    this.model.createPost(this.user, title, content);
+  handleInsertPost = (post) => {
+    this.model.createPost(this.user, post);
   }
-  handlerPostsChanged = (post) => {
+  handlePostsChanged = (post) => {
     this.resetPosts();
   }
 

@@ -60,32 +60,36 @@ export default class {
   }
 
   editPost(user, newPost, okHandler){
-    for (var i in this.posts) {
-      const post = this.posts[i];
-      if (post.id === newPost.id) {
-        const {title, content} = newPost;
-        post.title = title;
-        post.content = content;
-        post.modified = new Date();
-        if(okHandler){
-          okHandler(Object.create(post));
+    for (let i in this.posts) {
+      if (this.posts.hasOwnProperty(i)) {
+        const post = this.posts[i];
+        if (post.id === newPost.id) {
+          const {title, content} = newPost;
+          post.title = title;
+          post.content = content;
+          post.modified = new Date();
+          if(okHandler){
+            okHandler(Object.create(post));
+          }
+          this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+          return newPost.id;
         }
-        this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
-        return newPost.id;
       }
     }
   }
 
   removePost(user, postId, okHandler) {
-    for (var i in this.posts) {
-      const post = this.posts[i];
-      if (post.id === postId) {
-        this.posts.splice(i, 1);
-        if(okHandler){
-          okHandler(post);
+    for (let i in this.posts) {
+      if (this.posts.hasOwnProperty(i)) {
+        const post = this.posts[i];
+        if (post.id === postId) {
+          this.posts.splice(i, 1);
+          if(okHandler){
+            okHandler(post);
+          }
+          this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+          return;
         }
-        this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
-        return;
       }
     }
   }
