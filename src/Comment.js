@@ -1,5 +1,6 @@
 import React from 'react';
 import EditButtons from './EditButtons'
+import formatText from './formatText'
 
 export default class Comment extends React.Component
 {
@@ -35,7 +36,7 @@ export default class Comment extends React.Component
       );
     } else {
       content = (
-        <div className="w3-container w3-theme-light">{comment.content}</div>
+        <div className="w3-container w3-theme-light">{formatText(comment.content)}</div>
       );
     }
     return (

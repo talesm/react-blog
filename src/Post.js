@@ -2,6 +2,7 @@ import React from 'react';
 import PostForm from './PostForm';
 import CommentSection from './CommentSection';
 import EditButtons from './EditButtons'
+import formatText from './formatText'
 
 export default class extends React.Component{
   constructor(props) {
@@ -15,7 +16,7 @@ export default class extends React.Component{
     if(this.state.editing){
       content = <PostForm submitButtonText="Submit" title={post.title} content={post.content} onSubmit={this.onEditSubmited}/>;
     } else {
-      content = <div className="w3-container w3-theme-light">{post.content}</div>;
+      content = <div className="w3-container w3-theme-light">{formatText(post.content)}</div>;
     }
     return (
       <div className="App-post w3-card-4 w3-margin">
