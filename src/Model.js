@@ -11,12 +11,12 @@ class UserHandle {
 export default class {
   constructor() {
     this.users = new Map();
-    this.posts = 0;
+    this.posts = [];
     this.onCreatePostHandlers = [];
   }
 
   postsCount() {
-    return this.posts;
+    return this.posts.length;
   }
 
   usersCount() {
@@ -44,9 +44,13 @@ export default class {
   }
 
   createPost(user, title, content) {
-    this.posts ++;
     const date = new Date();
-    let post = {content, title, created: date, modified: date, user: user.name}
-    this.onCreatePostHandlers.forEach(handler => handler(title, post));
+    let post = {id:date.toISOString(), content, title, created: date, modified: date, user: user.name}
+    this.posts.unshift(post);
+    this.onCreatePostHandlers.forEach(handler => handler(post));
+  }
+
+  getPosts() {
+    return this.posts;
   }
 }
