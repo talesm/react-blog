@@ -1,4 +1,5 @@
 import React from 'react';
+import LogInForm from './LogInForm'
 import Model from './Model';
 import Post from './Post'
 import PostForm from './PostForm'
@@ -19,7 +20,7 @@ function PostPanel(props) {
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {userName: null, posts: [] }
+    this.state = {userName: null, posts: [], showLogIn : false }
     this.model = new Model();
     this.model.onPostChanged(this.handlerPostsChanged);
     this.user = null;
@@ -36,13 +37,25 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="w3-container w3-theme App-header">
-          <button className="w3-btn w3-theme-l3 w3-right" onClick={this.logInOut}>
-          { !this.state.userName ? "Log In": "Log Out"}
-          </button>
+          {this.state.userName && (
+            <button className="w3-btn w3-right w3-theme-l3" onClick={this.handleLogout}>
+            Log Out
+            </button>
+          )}
           <h2>Welcome Post System, {this.state.userName || 'Visitor'}</h2>
         </div>
         { !this.state.userName ? (
-          <SignUpForm onSubmit={this.handleSignUp} onError={alert}/>
+          <div>
+            <ul className="w3-navbar">
+              <li><a href="#" className={!this.state.showLogIn && "w3-theme-action"} onClick={()=> this.setState({showLogIn:false}) }>Sign Up</a></li>
+              <li><a href="#" className={ this.state.showLogIn && "w3-theme-action"} onClick={()=> this.setState({showLogIn:true}) }>Log In</a></li>
+            </ul>
+            {this.state.showLogIn? (
+              <LogInForm onSubmit={this.handleLogIn} onError={alert}/>
+            ):(
+              <SignUpForm onSubmit={this.handleSignUp} onError={alert}/>
+            )}
+          </div>
         ):(
           <PostForm submitButtonText="Add New Post" onSubmit={this.insertPost}/>
         )}
@@ -77,13 +90,18 @@ class App extends React.Component {
     }
   }
 
-  logInOut = () => {
-    if(this.user){
-      this.user = null;
-      this.setState({userName: null});
-    } else {
-      this.setState({showLoginForm: true});
+  handleLogIn = (userName, password) => {
+    try {
+      this.user = this.model.authUser(userName, password);
+      this.setState({userName: userName});
+    } catch (e) {
+      alert(e);
     }
+  }
+
+  handleLogout = () => {
+    this.user = null;
+    this.setState({userName: null});
   }
 }
 
