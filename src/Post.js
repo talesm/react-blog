@@ -1,5 +1,6 @@
 import React from 'react';
 import PostForm from './PostForm';
+import CommentSection from './CommentSection';
 
 export default class extends React.Component{
   constructor(props) {
@@ -27,14 +28,14 @@ export default class extends React.Component{
         <div className="w3-container w3-theme">
           <h3>{post.title}</h3>
         </div>
-        <div className="w3-container w3-theme-l3">
-          <span>Created By {post.user} on {post.created.toLocaleString()}</span>
-          {post.modified && post.modified !== post.created && (
-            <span>Modified on {post.modified.toLocaleString()}</span>
-          )}
-        </div>
         {content}
-
+        <div className="w3-container w3-theme-l4">
+        <div>Created By {post.user} on {post.created.toLocaleString()}</div>
+        {post.modified && post.modified !== post.created && (
+          <div>Modified on {post.modified.toLocaleString()}</div>
+        )}
+        </div>
+        <CommentSection comments={[{content:"Test", author:"testy", modified:new Date(), id:new Date().toISOString()}]}/>
       </div>
     );
   }
