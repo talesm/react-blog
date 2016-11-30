@@ -14,9 +14,14 @@ export default class extends React.Component{
           <h4>{comments.length > 0? "Comments:": "No Comments Yet."}</h4>
         </div>
         {comments.map(comment => (
-          <Comment key={comment.id} comment={comment} onEdit={this.props.onEdit} onRemove={this.props.onRemove}/>
+          <Comment key={comment.id} comment={comment} onEdit={this.props.onEdit}
+            onRemove={this.props.onRemove} user={this.props.user}
+          />
         ))}
-        <textarea className="w3-input" onChange={(ev)=>this.setState({content:ev.target.value})} value={this.state.content}/>
+        <textarea className="w3-input" value={this.state.content}
+          onChange={(ev)=>this.setState({content:ev.target.value})}
+          disabled={!this.props.user}
+        />
         <button className={"w3-btn-block w3-theme" + (!this.state.content?" w3-disabled":"")}
             onClick={this.onInsert}>
           Insert Comment

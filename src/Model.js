@@ -193,18 +193,6 @@ export default class {
 
   load() {
     const localStorage = window.localStorage;
-    if(!localStorage) {
-      console.log("Can not load");
-      return;
-    }
-    const users = JSON.parse(localStorage["users"]||"[]");
-    if(Array.isArray(users)){
-      this.users.clear();
-      users.forEach(user => this.users.set(user.name, user));
-    }
-    const posts = JSON.parse(localStorage["posts"]||"[]");
-    this.posts = Array.isArray(posts)? posts : [];
-
     window.resetModel = () => {
       localStorage.removeItem("users");
       localStorage.removeItem("posts");
@@ -219,6 +207,28 @@ export default class {
         this.load();
         this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
       }
-    })
+    });
+    if(!localStorage) {
+      console.log("Can not load");
+      return;
+    }
+    const users = JSON.parse(localStorage["users"]||"[]");
+    if(Array.isArray(users)){
+      this.users.clear();
+      users.forEach(user => this.users.set(user.name, user));
+    }
+    const posts = JSON.parse(localStorage["posts"]||"[]");
+    this.posts = Array.isArray(posts)? posts : [];
+    this.posts.forEach(fenixDown);
+
+    function fenixDown(o){
+      o.created = new Date(o.created);
+      o.modified = new Date(o.modified);
+      if(o.comments){
+        o.comments.forEach(fenixDown);
+      }
+    }
+
+
   }
 }

@@ -47,7 +47,7 @@ class App extends React.Component {
 
         <div className="w3-container w3-theme-dark App-footer">
           Created by <a target="__blank" href="https://talesm.github.io">talesm</a> for
-          an employment test, do not reuse it without permission.
+          an employment test.
         </div>
       </div>
     );

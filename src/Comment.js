@@ -40,7 +40,9 @@ export default class Comment extends React.Component
     }
     return (
       <div className="App-comment w3-card-2 w3-section">
-        <EditButtons onRemove={this.onRemove} onEdit={()=>this.setState({editing: !this.state.editing})}/>
+        <EditButtons onRemove={this.onRemove} disabled={this.props.user !== comment.user}
+          onEdit={()=>this.setState({editing: !this.state.editing})}
+        />
         <div className="w3-container w3-theme-l3">
           On {comment.modified.toLocaleString()}, {comment.user || "Unknown"} said:
         </div>

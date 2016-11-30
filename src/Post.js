@@ -31,8 +31,7 @@ export default class extends React.Component{
         )}
         </div>
         <CommentSection onInsert={this.onInsertComment} onRemove={this.onRemoveComment}
-          onEdit={this.onEditComment}
-          comments={post.comments}
+          onEdit={this.onEditComment} comments={post.comments} user={this.props.user}
         />
       </div>
     );
