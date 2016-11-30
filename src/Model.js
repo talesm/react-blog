@@ -46,15 +46,60 @@ export default class {
     this.onPostChangedHandlers.push(f);
   }
 
-  createPost(user, title, content) {
+  createPost(user, postProps, okHandler, errorHandler) {
     const date = new Date();
-    let post = {id:date.toISOString(), content, title, created: date, modified: date, user: user.name}
+    const {title, content} = postProps;
+    const id = date.toISOString();
+    const post = {id, content, title, created: date, modified: date, user: user.name}
     this.posts.unshift(post);
-    this.onPostChangedHandlers.forEach(handler => handler(post));
+    if(okHandler){
+      okHandler(post);
+    }
+    this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+    return id;
+  }
+
+  editPost(user, newPost, okHandler){
+    for (var i in this.posts) {
+      const post = this.posts[i];
+      if (post.id === newPost.id) {
+        const {title, content} = newPost;
+        post.title = title;
+        post.content = content;
+        post.modified = new Date();
+        if(okHandler){
+          okHandler(Object.create(post));
+        }
+        this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+        return newPost.id;
+      }
+    }
+  }
+
+  removePost(user, postId, okHandler) {
+    for (var i in this.posts) {
+      const post = this.posts[i];
+      if (post.id === postId) {
+        this.posts.splice(i, 1);
+        if(okHandler){
+          okHandler(post);
+        }
+        this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
+        return;
+      }
+    }
+  }
+
+  getPostById(id) {
+    for(let i in this.posts){
+      if (this.posts[i].id === id) {
+        return Object.create(this.posts[i]);
+      }
+    }
   }
 
   getPosts() {
-    return this.posts;
+    return this.posts.map(post => Object.create(post));
   }
 
   persist() {
@@ -89,14 +134,14 @@ export default class {
       localStorage.removeItem("posts");
       this.users.clear();
       this.posts = [];
-      this.onPostChangedHandlers.forEach(handler => handler({}));
+      this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
     }
 
     window.addEventListener('storage', (e) => {
       console.log('I happened');
       if (e.key === 'posts' || e.key === 'users') {
         this.load();
-        this.onPostChangedHandlers.forEach(handler => handler({}));
+        this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
       }
     })
   }
