@@ -4,7 +4,7 @@ class UserHandle {
   }
 
   isSame(other) {
-    return this.name == other.name;
+    return this.name === other.name;
   }
 }
 
