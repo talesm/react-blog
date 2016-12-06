@@ -44,15 +44,19 @@ export default class extends React.Component {
         message={this.state.message}
         onEditTitle={this.onEditTitle}
         onEditContent={this.onEditContent}
-        editable={this.props.user === this.state.message.user}
+        editable={this.props.editable}
         onSubmit={this.onSubmit}
+        onRemove={this.onRemove}
       />
     );
   }
 
   onSubmit = () => {
-    const message = this.state.message;
-    this.props.onEdit(message);
+    this.props.onEdit(this.state.message);
+  }
+
+  onRemove = () => {
+    this.props.onRemove(this.state.message.id);
   }
 
   onEditTitle = (ev) => {

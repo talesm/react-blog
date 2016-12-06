@@ -14,7 +14,7 @@ export default function(Template, Viewer, Editor) {
       const Content = (this.state.editing) ? Editor : Viewer;
       return (
         <Template>
-        <EditButtons disabled={!this.props.editable} onEdit={this.onEditToggle} onRemove={this.onRemove}/>
+        <EditButtons disabled={!this.props.editable} onEdit={this.onEditToggle} onRemove={this.props.onRemove}/>
         <Content {...this.props}/>
         </Template>
       );
@@ -23,12 +23,6 @@ export default function(Template, Viewer, Editor) {
     onEditToggle = () => {
       const editing = !this.state.editing;
       this.setState({editing});
-    }
-
-    onRemove = () => {
-      if(confirm("Are you sure to delete this post?") && this.props.onRemove){
-        this.props.onRemove(this.state.message.id);
-      }
     }
   }
   return MessageToggler;

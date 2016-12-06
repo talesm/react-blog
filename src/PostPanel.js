@@ -13,7 +13,7 @@ export default function PostPanel(props) {
     <div>{props.posts.map(message => {
       const MessageToggler = editButtonsWrapper(Post, PostViewer, PostForm);
       return (
-        <Message key={message.id} message={message} user={props.user} onEdit={props.onEdit}
+        <Message key={message.id} message={message} editable={props.user === message.user} onEdit={props.onEdit}
           onRemove={props.onRemove} onInsertComment={props.onInsertComment}
           onEditComment={props.onEditComment} onRemoveComment={props.onRemoveComment}
           Template={MessageToggler}

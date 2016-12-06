@@ -70,7 +70,9 @@ class App extends React.Component {
   }
 
   onRemovePost = (postId) => {
-    this.model.removePost(this.user, postId);
+    if(confirm("Are you sure you want to remove this post?")){
+      this.model.removePost(this.user, postId);
+    }
   }
 
   onInsertComment = (postId, comment) => {
