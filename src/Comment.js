@@ -1,18 +1,7 @@
 import React from 'react';
 
 export default function(props){
-    const comment = props.message;
-    // if(state.editing){
-    //   content = (
-    //     <div>
-    //       <textarea className="w3-input" value={state.content}
-    //           onChange={(ev)=>setState({content: ev.target.value})}
-    //       />
-    //       <button className="w3-btn-block w3-theme" onClick={onEdit}>Submit</button>
-    //     </div>
-    //   );
-    // } else {
-    // }
+  const comment = props.message;
   return (
     <div className="App-comment w3-card-2 w3-section">
       {props.buttons}

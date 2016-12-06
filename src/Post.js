@@ -1,5 +1,8 @@
 import React from 'react';
-import CommentSection from './CommentSection';
+import Comment from './Comment';
+import CommentInserter from './CommentInserter'
+import Message from './Message'
+import MessageContainer from './MessageContainer'
 
 export default function(props) {
   const message = props.message;
@@ -17,10 +20,17 @@ export default function(props) {
           <div>Modified on {message.lastEdited.toLocaleString()}</div>
         )}
       </div>
-      <CommentSection onChange={props.onChange} onInsertComment={props.onInsertComment}
-        onRemoveComment={props.onRemoveComment} onEditComment={props.onEditComment}
-        comments={message.comments} user={props.user}
-      />
+      <div className="App-comment-box w3-theme-l4 w3-container">
+        <div>
+          <h4>{message.comments.length > 0? "Comments:": "No Comments Yet."}</h4>
+        </div>
+        <MessageContainer Template={Comment} messages={message.comments}
+          onEdit={props.onEditComment}
+          onRemove={props.onRemoveComment}
+          user={props.user}
+        >Nothing</MessageContainer>
+      </div>
+      <Message Template={CommentInserter} user={props.user} onSubmit={props.onInsertComment}/>
     </div>
   )
 }

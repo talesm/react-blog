@@ -78,6 +78,12 @@ export default class extends React.Component {
     }
   }
 
+  onEditComment = (comment) => {
+    if(this.props.onEditComment){
+      this.props.onEditComment(this.state.message.id, comment);
+    }
+  }
+
   onRemoveComment = (commentId) => {
     if(this.props.onRemoveComment){
       this.props.onRemoveComment(this.state.message.id, commentId);
