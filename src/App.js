@@ -26,7 +26,7 @@ class App extends React.Component {
   render() {
     let topPanel;
     if(this.state.userName) {//Truthy if loged in, falsy otherwise
-      topPanel = <PostForm submitButtonText="Add New Post" onSubmit={this.onInsertPost}/>;
+      topPanel = undefined;//<PostForm submitButtonText="Add New Post" onSubmit={this.onInsertPost}/>;
     } else {
       topPanel = <AuthPanel onLogIn={this.onLogIn} onSignUp={this.onSignUp} onError={alert}/>;
     }

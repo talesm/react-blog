@@ -1,16 +1,25 @@
 import React from 'react';
+import PostContent from './PostContent'
 
-export default class extends React.Component{
-  render() {
-    const message = this.props.message||{};
-    return (
-      <form className="App-insert App-post w3-container">
-        <input placeholder="Title" className="w3-input"
-          onChange={this.props.onEditTitle} value={message.title}/>
-        <textarea placeholder="Content Here." className="w3-input"
-          onChange={this.props.onEditContent} value={message.content} />
-        <button className="w3-btn" onClick={this.props.onSubmit}>Submit</button>
-      </form>
-    );
-  }
+export default function(props){
+  const message = props.message;
+  const title = (
+    <input placeholder="Title" className="w3-input"
+      onChange={props.onEditTitle} value={message.title}/>
+  );
+  const content = (
+    <textarea placeholder="Content Here." className="w3-input"
+      onChange={props.onEditContent} value={message.content} />
+  );
+  return (
+    <form className="App-insert App-post">
+      <PostContent
+        {...props.message}
+        title={title}
+        content={content}
+      >
+        <button className="w3-btn-block w3-theme" onClick={props.onSubmit}>Submit</button>
+      </PostContent>
+    </form>
+  );
 }

@@ -43,15 +43,19 @@ export default class Message extends React.Component {
   render() {
     const message = this.state.message;
     const enableEdit = this.props.user === message.user;
-    const editButtons = <EditButtons disabled={!enableEdit} onEdit={this.onEditToggle} onRemove={this.onRemove}/>
     const content = (this.state.editing) ? (
       <this.props.Editor message={message} onSubmit={this.onSubmit}
-        onEditTitle={this.onEditTitle} onEditContent={this.onEditContent}  editButtons={editButtons}
+        onEditTitle={this.onEditTitle} onEditContent={this.onEditContent}
       />
     ): (
-      <this.props.Viewer message={message}  editButtons={editButtons}/>
+      <this.props.Viewer message={message}/>
     );
-    return (<this.props.Template message={message} editButtons={editButtons} content={content} />)
+    return (
+      <this.props.Template>
+      <EditButtons disabled={!enableEdit} onEdit={this.onEditToggle} onRemove={this.onRemove}/>
+      {content}
+      </this.props.Template>
+    );
   }
 
   onEditToggle = () => {
