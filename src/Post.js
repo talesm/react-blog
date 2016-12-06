@@ -1,30 +1,18 @@
 import React from 'react';
-import PostForm from './PostForm';
+// import PostForm from './PostForm';
 import CommentSection from './CommentSection';
 import EditButtons from './EditButtons'
-import formatText from './formatText'
 
 export default class extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = {editing: false}
-  }
-
   render() {
-    const post = this.props.post;
-    let content;
-    if(this.state.editing){
-      content = <PostForm submitButtonText="Submit" title={post.title} content={post.content} onSubmit={this.onEditSubmited}/>;
-    } else {
-      content = <div className="w3-container w3-theme-light">{formatText(post.content)}</div>;
-    }
+    const post = this.props.message;
     return (
       <div className="App-post w3-card-4 w3-margin">
-        <EditButtons disabled={this.props.user !== post.user} onEdit={this.onEdit} onRemove={this.onRemove}/>
+        <EditButtons disabled={!this.props.enableEdit} onEdit={this.props.onEditToggle} onRemove={this.props.onRemove}/>
         <div className="w3-container w3-theme">
           <h3>{post.title}</h3>
         </div>
-        {content}
+        <div className="w3-container w3-theme-light">{this.props.content}</div>
         <div className="w3-container w3-theme-l4">
         <div>Created By {post.user} on {post.created.toLocaleString()}</div>
         {post.modified && post.modified !== post.created && (
