@@ -1,17 +1,21 @@
 import React from 'react';
 
+function emptyMessage() {
+  return {
+      content: "",
+      title: "",
+      user: "",
+      created: "",
+      modified: "",
+      comments: [],
+    };
+}
+
 export default class extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      message: {
-        content: "",
-        title: "",
-        user: "",
-        created: "",
-        modified: "",
-        comments: [],
-      }
+      message: emptyMessage()
     };
   }
 
@@ -25,6 +29,10 @@ export default class extends React.Component {
 
   reset(){
     const message = this.props.message;
+    if(!message){
+      this.setState({message: emptyMessage()});
+      return;
+    }
     this.setState({
       message: {
         id: message.id,
@@ -52,7 +60,8 @@ export default class extends React.Component {
   }
 
   onSubmit = () => {
-    this.props.onEdit(this.state.message);
+    this.props.onSubmit(this.state.message);
+    this.reset();
   }
 
   onRemove = () => {

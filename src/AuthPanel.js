@@ -9,6 +9,9 @@ export default class extends React.Component{
   }
 
   render() {
+    if (this.props.loggedIn) {
+      return null;
+    }
     return (
       <div>
         <ul className="w3-navbar">

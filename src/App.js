@@ -1,7 +1,8 @@
 import React from 'react';
 import AuthPanel, {LogOutButton} from './AuthPanel'
+import Message from './Message';
 import Model from './Model';
-import PostForm from './PostForm'
+import PostInserter from './PostInserter'
 import PostPanel from './PostPanel'
 import './w3.css';
 import './w3-theme-amber.css';
@@ -24,20 +25,15 @@ class App extends React.Component {
   }
 
   render() {
-    let topPanel;
-    if(this.state.userName) {//Truthy if loged in, falsy otherwise
-      topPanel = undefined;//<PostForm submitButtonText="Add New Post" onSubmit={this.onInsertPost}/>;
-    } else {
-      topPanel = <AuthPanel onLogIn={this.onLogIn} onSignUp={this.onSignUp} onError={alert}/>;
-    }
+    const loggedIn = !!this.state.userName;
     return (
       <div className="App">
         <div className="w3-container w3-theme App-header">
           <LogOutButton enabled={!!this.state.userName} onClick={this.onLogout} />
           <h2>Welcome Post System, {this.state.userName || 'Visitor'}</h2>
         </div>
-
-        { topPanel }
+        <AuthPanel loggedIn={loggedIn} onLogIn={this.onLogIn} onSignUp={this.onSignUp} onError={alert}/>
+        <Message onSubmit={this.onInsertPost} Template={PostInserter} editable={loggedIn}/>
 
         <PostPanel posts={this.state.posts} user={this.state.userName}
           onEdit={this.onEditPost} onRemove={this.onRemovePost}
@@ -57,11 +53,7 @@ class App extends React.Component {
     this.setState({posts: this.model.getPosts()});
   }
 
-  onInsertPost = () => {
-    const post = {
-      title: "A title",
-      content: "A content"
-    }
+  onInsertPost = (post) => {
     this.model.createPost(this.user, post);
   }
 
