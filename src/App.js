@@ -1,9 +1,10 @@
 import React from 'react';
 import AuthPanel, {LogOutButton} from './AuthPanel'
 import Message from './Message';
+import MessageContainer from './MessageContainer'
 import Model from './Model';
+import Post from './Post'
 import PostInserter from './PostInserter'
-import PostPanel from './PostPanel'
 import './w3.css';
 import './w3-theme-amber.css';
 import './App.css';
@@ -35,11 +36,13 @@ class App extends React.Component {
         <AuthPanel loggedIn={loggedIn} onLogIn={this.onLogIn} onSignUp={this.onSignUp} onError={alert}/>
         <Message onSubmit={this.onInsertPost} Template={PostInserter} user={this.state.userName}/>
 
-        <PostPanel posts={this.state.posts} user={this.state.userName}
+        <MessageContainer Template={Post} messages={this.state.posts} user={this.state.userName}
           onEdit={this.onEditPost} onRemove={this.onRemovePost}
           onEditComment={this.onEditComment} onInsertComment={this.onInsertComment}
           onRemoveComment={this.onRemoveComment}
-        />
+        >
+          <div className="w3-card-4 w3-center w3-theme-light"><h2>No post yet</h2></div>
+        </MessageContainer>
 
         <div className="w3-container w3-theme-dark App-footer">
           Created by <a target="__blank" href="https://talesm.github.io">talesm</a> for

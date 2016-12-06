@@ -1,22 +1,22 @@
 import React from 'react';
 import Message from './Message'
 import {wrapEditButtons, wrapEditor, wrapViewer} from './messageWrappers'
-import PostContent from './PostContent'
 
-export default function PostPanel(props) {
-  if(props.posts.length === 0){
-    return (<div className="w3-card-4 w3-center w3-theme-light"><h2>No post yet</h2></div>)
+export default function(props) {
+  if(props.messages.length === 0){
+    return props.children
   }
+  const Template = props.Template;
   return (
-    <div>{props.posts.map(message => {
-      const MessageToggler = wrapEditButtons(wrapViewer(PostContent), wrapEditor(PostContent));
+    <div>{props.messages.map(message => {
+      const MessageToggler = wrapEditButtons(wrapViewer(Template), wrapEditor(Template));
       return (
         <Message key={message.modified.toISOString()} message={message} user={props.user}
           onSubmit={props.onEdit} onRemove={props.onRemove}
           onInsertComment={props.onInsertComment} onRemoveComment={props.onRemoveComment}
           Template={MessageToggler}
         />
-      )
+      );
     })}</div>
   )
 }
