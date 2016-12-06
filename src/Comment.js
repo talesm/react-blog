@@ -60,7 +60,7 @@ export default class Comment extends React.Component
   }
 
   onRemove = () => {
-    if(confirm("Are you sure you want to remove this comment?") && this.props.onRemove){
+    if(this.props.onRemove){
       this.props.onRemove(this.props.comment.id);
     }
   }

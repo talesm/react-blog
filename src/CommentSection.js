@@ -26,19 +26,12 @@ export default class extends React.Component{
           <h4>{comments.length > 0? "Comments:": "No Comments Yet."}</h4>
         </div>
         {comments.map(comment => (
-          <Comment key={comment.id} comment={comment} onEdit={this.props.onEdit}
-            onRemove={this.props.onRemove} user={this.props.user}
+          <Comment key={comment.id} comment={comment} onEdit={this.props.onEditComment}
+            onRemove={this.props.onRemoveComment} user={this.props.user}
           />
         ))}
         <Message Template={CommentInserter} user={this.props.user} onSubmit={this.props.onInsertComment}/>
       </div>
     )
-  }
-
-  onInsert = () => {
-    if(this.props.onInsert){
-      this.props.onInsert({content: this.state.content});
-    }
-    this.setState({content:''});
   }
 }

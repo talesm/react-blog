@@ -13,11 +13,12 @@ export default function(props) {
       {props.children}
       <div className="w3-container w3-theme-l4">
         <div>Created By {message.user} on {message.created.toLocaleString()}</div>
-        {message.modified && message.modified !== message.created && (
-          <div>Modified on {message.modified.toLocaleString()}</div>
+        {message.lastEdited && (
+          <div>Modified on {message.lastEdited.toLocaleString()}</div>
         )}
       </div>
       <CommentSection onChange={props.onChange} onInsertComment={props.onInsertComment}
+        onRemoveComment={props.onRemoveComment} onEditComment={props.onEditComment}
         comments={message.comments} user={props.user}
       />
     </div>

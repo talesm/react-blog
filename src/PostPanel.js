@@ -11,9 +11,9 @@ export default function PostPanel(props) {
     <div>{props.posts.map(message => {
       const MessageToggler = wrapEditButtons(wrapViewer(PostContent), wrapEditor(PostContent));
       return (
-        <Message key={message.id} message={message} user={props.user}
+        <Message key={message.modified.toISOString()} message={message} user={props.user}
           onSubmit={props.onEdit} onRemove={props.onRemove}
-          onInsertComment={props.onInsertComment}
+          onInsertComment={props.onInsertComment} onRemoveComment={props.onRemoveComment}
           Template={MessageToggler}
         />
       )

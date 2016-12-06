@@ -41,6 +41,7 @@ export default class extends React.Component {
         user: message.user,
         created: message.created,
         modified: message.modified,
+        lastEdited: message.lastEdited,
         comments: message.comments,
       }
     });
@@ -56,6 +57,8 @@ export default class extends React.Component {
         onSubmit={this.onSubmit}
         onRemove={this.onRemove}
         onInsertComment={this.onInsertComment}
+        onEditComment={this.onEditComment}
+        onRemoveComment={this.onRemoveComment}
       />
     );
   }
@@ -72,6 +75,12 @@ export default class extends React.Component {
   onInsertComment = (comment) => {
     if(this.props.onInsertComment){
       this.props.onInsertComment(this.state.message.id, comment);
+    }
+  }
+
+  onRemoveComment = (commentId) => {
+    if(this.props.onRemoveComment){
+      this.props.onRemoveComment(this.state.message.id, commentId);
     }
   }
 

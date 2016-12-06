@@ -76,7 +76,9 @@ class App extends React.Component {
   }
 
   onRemoveComment = (postId, commentId) => {
-    this.model.removeComment(this.user, postId, commentId);
+    if(confirm("Are you sure you want to remove this comment?")){
+      this.model.removeComment(this.user, postId, commentId);
+    }
   }
 
   onPostsChanged = (post) => {

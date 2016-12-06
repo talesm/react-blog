@@ -50,7 +50,7 @@ export default class {
     const date = new Date();
     const {title, content} = postProps;
     const id = date.toISOString();
-    const post = {id, content, title, created: date, modified: date, user: user.name}
+    const post = {id, content, title, created: date, modified: date, lastEdited: null, user: user.name}
     this.posts.unshift(post);
     if(okHandler){
       okHandler(post);
@@ -65,13 +65,17 @@ export default class {
         const post = this.posts[i];
         if (post.id === newPost.id) {
           const {title, content} = newPost;
-          post.title = title;
-          post.content = content;
-          post.modified = new Date();
-          if(okHandler){
-            okHandler(Object.create(post));
+          const currentDate = new Date();
+          if (title !== post.title || content !== post.content) {
+            post.title = title;
+            post.content = content;
+            post.lastEdited = currentDate;
+            post.modified = currentDate;
+            if(okHandler){
+              okHandler(Object.create(post));
+            }
+            this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
           }
-          this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
           return newPost.id;
         }
       }
@@ -126,7 +130,7 @@ export default class {
       if (posts.hasOwnProperty(i) && posts[i].id === postId) {
         const post = posts[i];
         const date = new Date();
-        post.id = date.toISOString();
+        post.modified = date;
         const comment = {
           id: date.toISOString(),
           created: date,
@@ -152,8 +156,10 @@ export default class {
         const post = posts[i];
         for(let j in post.comments){
           if (post.comments.hasOwnProperty(j) && post.comments[j].id === commentProps.id) {
+            const date = new Date();
+            post.modified = date;
             const comment = post.comments[j];
-            comment.modified = new Date();
+            comment.modified = date;
             comment.content = commentProps.content;
             this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
             return;
@@ -170,6 +176,7 @@ export default class {
         const post = posts[i];
         for(let j in post.comments){
           if (post.comments.hasOwnProperty(j) && post.comments[j].id === commentId) {
+            post.modified = new Date();
             post.comments.splice(j, 1);
             this.onPostChangedHandlers.forEach(handler => handler(this.getPosts()));
             return;
@@ -225,6 +232,7 @@ export default class {
     function fenixDown(o){
       o.created = new Date(o.created);
       o.modified = new Date(o.modified);
+      o.lastEdited = o.lastEdited && new Date(o.lastEdited);
       if(o.comments){
         o.comments.forEach(fenixDown);
       }
