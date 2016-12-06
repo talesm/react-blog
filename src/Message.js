@@ -55,6 +55,7 @@ export default class extends React.Component {
         user={this.props.user}
         onSubmit={this.onSubmit}
         onRemove={this.onRemove}
+        onInsertComment={this.onInsertComment}
       />
     );
   }
@@ -66,6 +67,12 @@ export default class extends React.Component {
 
   onRemove = () => {
     this.props.onRemove(this.state.message.id);
+  }
+
+  onInsertComment = (comment) => {
+    if(this.props.onInsertComment){
+      this.props.onInsertComment(this.state.message.id, comment);
+    }
   }
 
   onEditTitle = (ev) => {

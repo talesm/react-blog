@@ -126,6 +126,7 @@ export default class {
       if (posts.hasOwnProperty(i) && posts[i].id === postId) {
         const post = posts[i];
         const date = new Date();
+        post.id = date.toISOString();
         const comment = {
           id: date.toISOString(),
           created: date,

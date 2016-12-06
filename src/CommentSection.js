@@ -1,5 +1,21 @@
 import React from 'react';
+import Message from "./Message"
 import Comment from "./Comment"
+
+function CommentInserter(props) {
+  const message = props.message;
+  return(
+    <div>
+      <textarea className="w3-input" value={message.content}
+        onChange={props.onEditContent}
+        disabled={!props.user}
+      />
+      <button className={"w3-btn-block w3-theme" + (!message.content?" w3-disabled":"")}
+          onClick={props.onSubmit}
+      >Insert Comment</button>
+    </div>
+  );
+}
 
 export default class extends React.Component{
   render(){
@@ -14,14 +30,7 @@ export default class extends React.Component{
             onRemove={this.props.onRemove} user={this.props.user}
           />
         ))}
-        <textarea className="w3-input" value={this.props.content}
-          onChange={(ev)=>this.setState({content:ev.target.value})}
-          disabled={!this.props.user}
-        />
-        <button className={"w3-btn-block w3-theme" + (!this.props.content?" w3-disabled":"")}
-            onClick={this.onInsert}>
-          Insert Comment
-        </button>
+        <Message Template={CommentInserter} user={this.props.user} onSubmit={this.props.onInsertComment}/>
       </div>
     )
   }

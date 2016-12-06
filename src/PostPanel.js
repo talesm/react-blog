@@ -13,6 +13,7 @@ export default function PostPanel(props) {
       return (
         <Message key={message.id} message={message} user={props.user}
           onSubmit={props.onEdit} onRemove={props.onRemove}
+          onInsertComment={props.onInsertComment}
           Template={MessageToggler}
         />
       )
