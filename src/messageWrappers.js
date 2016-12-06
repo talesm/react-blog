@@ -1,33 +1,35 @@
 import React from 'react';
 import EditButtons from './EditButtons'
 import formatText from './formatText'
+import update from 'immutability-helper';
 
 function wrapViewer(Template) {
   return function(props){
+    const message = update(props.message, {content: {$set: formatText(props.message.content)}});
     return <Template
-      {...props.message}
-      content={formatText(props.message.content)}
+      {...props}
+      message={message}
     />
   };
 }
 
 function wrapEditor(Template){
   return function(props){
-    const message = props.message;
-    const title = (
-      <input placeholder="Title" className="w3-input"
-        onChange={props.onEditTitle} value={message.title}/>
-    );
-    const content = (
-      <textarea placeholder="Content Here." className="w3-input"
-        onChange={props.onEditContent} value={message.content} />
-    );
+    const message = update(props.message, {
+      title: {$set: (
+        <input placeholder="Title" className="w3-input"
+          onChange={props.onEditTitle} value={props.message.title} />
+      )},
+      content: {$set: (
+        <textarea placeholder="Content Here." className="w3-input"
+          onChange={props.onEditContent} value={props.message.content} />
+      )}
+    });
     return (
       <form className="App-insert App-post">
         <Template
-          {...props.message}
-          title={title}
-          content={content}
+          {...props}
+          message={message}
         >
           <button className="w3-btn-block w3-theme" onClick={props.onSubmit}>Submit</button>
         </Template>
