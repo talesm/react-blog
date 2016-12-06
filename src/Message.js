@@ -1,5 +1,4 @@
 import React from 'react';
-import Post from './Post';
 
 export default class Message extends React.Component {
   constructor(props){
@@ -50,7 +49,7 @@ export default class Message extends React.Component {
     ): (
       <this.props.Viewer message={message}/>
     );
-    return (<Post message={message} enableEdit={enableEdit} enableRemove={enableEdit}
+    return (<this.props.Template message={message} enableEdit={enableEdit} enableRemove={enableEdit}
       onEditToggle={this.onEditToggle} onRemove={this.onRemove} content={Content}
     />)
   }
