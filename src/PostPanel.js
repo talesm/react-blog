@@ -1,12 +1,8 @@
 import React from 'react';
-import formatText from './formatText'
 import Message from './Message'
 import PostForm from './PostForm'
+import PostViewer from './PostViewer'
 import Post from './Post'
-
-function PostViewer(props){
-  return <div>{formatText(props.message.content)}</div>;
-}
 
 export default function PostPanel(props) {
   if(props.posts.length === 0){
