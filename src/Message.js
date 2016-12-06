@@ -1,4 +1,5 @@
 import React from 'react';
+import EditButtons from './EditButtons'
 
 export default class Message extends React.Component {
   constructor(props){
@@ -42,16 +43,15 @@ export default class Message extends React.Component {
   render() {
     const message = this.state.message;
     const enableEdit = this.props.user === message.user;
-    const Content = (this.state.editing) ? (
+    const editButtons = <EditButtons disabled={!enableEdit} onEdit={this.onEditToggle} onRemove={this.onRemove}/>
+    const content = (this.state.editing) ? (
       <this.props.Editor message={message} onSubmit={this.onSubmit}
-        onEditTitle={this.onEditTitle} onEditContent={this.onEditContent}
+        onEditTitle={this.onEditTitle} onEditContent={this.onEditContent}  editButtons={editButtons}
       />
     ): (
-      <this.props.Viewer message={message}/>
+      <this.props.Viewer message={message}  editButtons={editButtons}/>
     );
-    return (<this.props.Template message={message} enableEdit={enableEdit} enableRemove={enableEdit}
-      onEditToggle={this.onEditToggle} onRemove={this.onRemove} content={Content}
-    />)
+    return (<this.props.Template message={message} editButtons={editButtons} content={content} />)
   }
 
   onEditToggle = () => {

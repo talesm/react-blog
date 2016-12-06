@@ -1,14 +1,13 @@
 import React from 'react';
 // import PostForm from './PostForm';
 import CommentSection from './CommentSection';
-import EditButtons from './EditButtons'
 
 export default class extends React.Component{
   render() {
     const post = this.props.message;
     return (
       <div className="App-post w3-card-4 w3-margin">
-        <EditButtons disabled={!this.props.enableEdit} onEdit={this.props.onEditToggle} onRemove={this.props.onRemove}/>
+        {this.props.editButtons}
         <div className="w3-container w3-theme">
           <h3>{post.title}</h3>
         </div>
