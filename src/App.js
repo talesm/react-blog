@@ -57,7 +57,11 @@ class App extends React.Component {
     this.setState({posts: this.model.getPosts()});
   }
 
-  onInsertPost = (post) => {
+  onInsertPost = () => {
+    const post = {
+      title: "A title",
+      content: "A content"
+    }
     this.model.createPost(this.user, post);
   }
 

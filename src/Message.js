@@ -51,7 +51,7 @@ export default class Message extends React.Component {
       <this.props.Viewer message={message}/>
     );
     return (<Post message={message} enableEdit={enableEdit} enableRemove={enableEdit}
-      onEditToggle={this.onEditToggle} content={Content}
+      onEditToggle={this.onEditToggle} onRemove={this.onRemove} content={Content}
     />)
   }
 
@@ -59,6 +59,12 @@ export default class Message extends React.Component {
     const editing = !this.state.editing;
     this.setState({editing});
     this.reset();
+  }
+
+  onRemove = () => {
+    if(confirm("Are you sure to delete this post?") && this.props.onRemove){
+      this.props.onRemove(this.state.message.id);
+    }
   }
 
   onSubmit = () => {
