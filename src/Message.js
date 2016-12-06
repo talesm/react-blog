@@ -1,11 +1,9 @@
 import React from 'react';
-import EditButtons from './EditButtons'
 
-export default class Message extends React.Component {
+export default class extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      editing: false,
       message: {
         content: "",
         title: "",
@@ -41,37 +39,18 @@ export default class Message extends React.Component {
   }
 
   render() {
-    const message = this.state.message;
-    const enableEdit = this.props.user === message.user;
-    const content = (this.state.editing) ? (
-      <this.props.Editor message={message} onSubmit={this.onSubmit}
-        onEditTitle={this.onEditTitle} onEditContent={this.onEditContent}
-      />
-    ): (
-      <this.props.Viewer message={message}/>
-    );
     return (
-      <this.props.Template>
-      <EditButtons disabled={!enableEdit} onEdit={this.onEditToggle} onRemove={this.onRemove}/>
-      {content}
-      </this.props.Template>
+      <this.props.Template
+        message={this.state.message}
+        onEditTitle={this.onEditTitle}
+        onEditContent={this.onEditContent}
+        editable={this.props.user === this.state.message.user}
+        onSubmit={this.onSubmit}
+      />
     );
-  }
-
-  onEditToggle = () => {
-    const editing = !this.state.editing;
-    this.setState({editing});
-    this.reset();
-  }
-
-  onRemove = () => {
-    if(confirm("Are you sure to delete this post?") && this.props.onRemove){
-      this.props.onRemove(this.state.message.id);
-    }
   }
 
   onSubmit = () => {
-    this.setState({editing: false});
     const message = this.state.message;
     this.props.onEdit(message);
   }
