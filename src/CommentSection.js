@@ -26,8 +26,9 @@ export default class extends React.Component{
           <h4>{comments.length > 0? "Comments:": "No Comments Yet."}</h4>
         </div>
         {comments.map(comment => (
-          <Comment key={comment.id} comment={comment} onEdit={this.props.onEditComment}
-            onRemove={this.props.onRemoveComment} user={this.props.user}
+          <Message key={comment.id} Template={Comment} message={comment}
+            onSubmit={this.props.onEditComment} onRemove={this.props.onRemoveComment}
+            user={this.props.user}
           />
         ))}
         <Message Template={CommentInserter} user={this.props.user} onSubmit={this.props.onInsertComment}/>
