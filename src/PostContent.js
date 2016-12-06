@@ -17,8 +17,8 @@ export default function(props) {
           <div>Modified on {message.modified.toLocaleString()}</div>
         )}
       </div>
-      <CommentSection onInsert={props.onInsertComment} onRemove={props.onRemoveComment}
-        onEdit={props.onEditComment} comments={message.comments}
+      <CommentSection onChange={props.onChange}
+        comments={message.comments} user={props.user}
       />
     </div>
   )

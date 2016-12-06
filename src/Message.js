@@ -52,7 +52,7 @@ export default class extends React.Component {
         message={this.state.message}
         onEditTitle={this.onEditTitle}
         onEditContent={this.onEditContent}
-        editable={this.props.editable}
+        user={this.props.user}
         onSubmit={this.onSubmit}
         onRemove={this.onRemove}
       />

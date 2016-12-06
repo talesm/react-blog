@@ -48,7 +48,7 @@ function wrapEditButtons(ViewerTemplate, EditorTemplate) {
     }
 
     render() {
-      const buttons = <EditButtons disabled={!this.props.editable} onEdit={this.onEditToggle} onRemove={this.props.onRemove}/>;
+      const buttons = <EditButtons disabled={!this.props.user} onEdit={this.onEditToggle} onRemove={this.props.onRemove}/>;
       if(this.state.editing){
         return <EditorTemplate {...this.props} buttons={buttons}/>;
       } else {

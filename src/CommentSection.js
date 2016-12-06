@@ -2,10 +2,6 @@ import React from 'react';
 import Comment from "./Comment"
 
 export default class extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {inserting: false, content: ''};
-  }
   render(){
     const comments = this.props.comments || [];
     return (
@@ -18,11 +14,11 @@ export default class extends React.Component{
             onRemove={this.props.onRemove} user={this.props.user}
           />
         ))}
-        <textarea className="w3-input" value={this.state.content}
+        <textarea className="w3-input" value={this.props.content}
           onChange={(ev)=>this.setState({content:ev.target.value})}
           disabled={!this.props.user}
         />
-        <button className={"w3-btn-block w3-theme" + (!this.state.content?" w3-disabled":"")}
+        <button className={"w3-btn-block w3-theme" + (!this.props.content?" w3-disabled":"")}
             onClick={this.onInsert}>
           Insert Comment
         </button>

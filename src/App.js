@@ -33,7 +33,7 @@ class App extends React.Component {
           <h2>Welcome Post System, {this.state.userName || 'Visitor'}</h2>
         </div>
         <AuthPanel loggedIn={loggedIn} onLogIn={this.onLogIn} onSignUp={this.onSignUp} onError={alert}/>
-        <Message onSubmit={this.onInsertPost} Template={PostInserter} editable={loggedIn}/>
+        <Message onSubmit={this.onInsertPost} Template={PostInserter} user={this.state.userName}/>
 
         <PostPanel posts={this.state.posts} user={this.state.userName}
           onEdit={this.onEditPost} onRemove={this.onRemovePost}

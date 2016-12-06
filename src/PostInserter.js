@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function(props){
-  if(!props.editable) {
+  if(!props.user) {
     return null;
   }
   const message = props.message;
