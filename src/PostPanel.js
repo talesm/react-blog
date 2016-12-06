@@ -1,6 +1,6 @@
 import React from 'react';
 import Message from './Message'
-import editButtonsWrapper from './editButtonsWrapper'
+import {editButtonsWrapper} from './messageWrappers'
 import Post from './Post'
 import PostForm from './PostForm'
 import PostViewer from './PostViewer'

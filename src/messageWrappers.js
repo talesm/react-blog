@@ -1,7 +1,7 @@
 import React from 'react';
 import EditButtons from './EditButtons'
 
-export default function(Template, Viewer, Editor) {
+function editButtonsWrapper(Template, Viewer, Editor) {
   class MessageToggler extends React.Component {
     constructor(props){
       super(props)
@@ -27,3 +27,5 @@ export default function(Template, Viewer, Editor) {
   }
   return MessageToggler;
 };
+
+export {editButtonsWrapper};
