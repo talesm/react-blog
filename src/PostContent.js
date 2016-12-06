@@ -4,7 +4,8 @@ import CommentSection from './CommentSection';
 export default function(props) {
   const message = props.message;
   return (
-    <div>
+    <div className="App-post w3-card-4 w3-margin">
+      {props.buttons}
       <div className="w3-container w3-theme">
         <h3>{message.title}</h3>
       </div>

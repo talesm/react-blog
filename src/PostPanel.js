@@ -1,7 +1,6 @@
 import React from 'react';
 import Message from './Message'
 import {wrapEditButtons, wrapEditor, wrapViewer} from './messageWrappers'
-import Post from './Post'
 import PostContent from './PostContent'
 
 export default function PostPanel(props) {
@@ -10,7 +9,7 @@ export default function PostPanel(props) {
   }
   return (
     <div>{props.posts.map(message => {
-      const MessageToggler = wrapEditButtons(Post, wrapViewer(PostContent), wrapEditor(PostContent));
+      const MessageToggler = wrapEditButtons(wrapViewer(PostContent), wrapEditor(PostContent));
       return (
         <Message key={message.id} message={message} editable={props.user === message.user}
           onSubmit={props.onEdit} onRemove={props.onRemove}

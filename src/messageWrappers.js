@@ -38,7 +38,7 @@ function wrapEditor(Template){
   }
 }
 
-function wrapEditButtons(Template, Viewer, Editor) {
+function wrapEditButtons(ViewerTemplate, EditorTemplate) {
   class MessageToggler extends React.Component {
     constructor(props){
       super(props)
@@ -48,13 +48,12 @@ function wrapEditButtons(Template, Viewer, Editor) {
     }
 
     render() {
-      const Content = (this.state.editing) ? Editor : Viewer;
-      return (
-        <Template>
-        <EditButtons disabled={!this.props.editable} onEdit={this.onEditToggle} onRemove={this.props.onRemove}/>
-        <Content {...this.props}/>
-        </Template>
-      );
+      const buttons = <EditButtons disabled={!this.props.editable} onEdit={this.onEditToggle} onRemove={this.props.onRemove}/>;
+      if(this.state.editing){
+        return <EditorTemplate {...this.props} buttons={buttons}/>;
+      } else {
+        return <ViewerTemplate {...this.props} buttons={buttons}/>;
+      }
     }
 
     onEditToggle = () => {
